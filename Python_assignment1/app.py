@@ -1,6 +1,6 @@
 from heuristics import Heuristic, SimpleHeuristic
 from players import PlayerController, HumanPlayer, MinMaxPlayer, AlphaBetaPlayer
-from board import Board,TreeNode
+from board import Board
 from typing import List
 import numpy as np
 from numba import jit
@@ -140,7 +140,7 @@ def get_players(game_n: int) -> List[PlayerController]:
     heuristic2: Heuristic = SimpleHeuristic(game_n)
 
     human1: PlayerController = HumanPlayer(1, game_n, heuristic1)
-    minmax_player: PlayerController = MinMaxPlayer(2, game_n, depth=4, heuristic=heuristic2)
+    minmax_player: PlayerController = MinMaxPlayer(2, game_n, depth=5, heuristic=heuristic2)
 
     # TODO: Implement other PlayerControllers (MinMaxPlayer and AlphaBetaPlayer)
 
