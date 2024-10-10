@@ -139,12 +139,13 @@ def get_players(game_n: int) -> List[PlayerController]:
     heuristic1: Heuristic = SimpleHeuristic(game_n)
     heuristic2: Heuristic = SimpleHeuristic(game_n)
 
-    human1: PlayerController = AlphaBetaPlayer(1, game_n, depth=6, heuristic=heuristic1)
-    minmax_player: PlayerController = MinMaxPlayer(2, game_n, depth=5, heuristic=heuristic2)
+    #human1: PlayerController = HumanPlayer(1, game_n, heuristic=heuristic2)
+    alphabeta: PlayerController = AlphaBetaPlayer(1, game_n, depth=1, heuristic=heuristic1)
+    minmax_player: PlayerController = MinMaxPlayer(2, game_n, depth=1, heuristic=heuristic2)
 
-    # TODO: Implement other PlayerControllers (MinMaxPlayer and AlphaBetaPlayer)
+    
 
-    players: List[PlayerController] = [human1, minmax_player]
+    players: List[PlayerController] = [minmax_player, alphabeta]
 
     assert players[0].player_id in {1, 2}, 'The player_id of the first player must be either 1 or 2'
     assert players[1].player_id in {1, 2}, 'The player_id of the second player must be either 1 or 2'
@@ -156,9 +157,9 @@ def get_players(game_n: int) -> List[PlayerController]:
 
 
 if __name__ == '__main__':
-    game_n: int = 4 # n in a row required to win
-    width: int = 7  # width of the board
-    height: int = 6 # height of the board
+    game_n: int = 3 # n in a row required to win
+    width: int = 5  # width of the board
+    height: int = 5 # height of the board
 
     # Check whether the game_n is possible
     assert 1 < game_n <= min(width, height), 'game_n is not possible'
