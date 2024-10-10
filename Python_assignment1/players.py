@@ -154,9 +154,73 @@ class AlphaBetaPlayer(PlayerController):
         Returns:
             int: column to play in
         """
+        
+        root = TreeNode(state=board)
+        
+        max_value = -np.inf
+        best_move = None
+        
+        root.generate_children(self.player_id)
+        
+        for child in root.children:
+            value = self.alpha_beta(child, self.depth - 1, -np.inf, np.inf, False)
 
-        # TODO: implement minmax algorithm with alpha beta pruning!
-        return 0
+            if value > max_value:
+                max_value = value
+                best_move = child.move
+
+        return best_move
+
+        
+    
+    
+    def alpha_beta(self, node: TreeNode, depth: int, alpha: float, beta: float, maximizing_player: bool):
+        
+        if depth == 0 or self.heuristic.winning(node.state.get_board_state(), self.game_n) != 0:
+            return self.heuristic.evaluate_board(self.player_id, node.state)
+        
+        
+        if maximizing_player:
+                #this executes when it is the minimax player's turn (trying to maximize)
+                
+            max_eval = -np.inf
+            node.generate_children(self.player_id)
+            
+            for child in node.children:
+                eval = self.alpha_beta(child, depth - 1, alpha, beta, False)
+                max_eval = max(max_eval, eval)
+                alpha = max(alpha, eval)
+                    
+                if beta <= alpha:
+                    break
+                
+            node.utility = max_eval
+            return max_eval
+        
+        
+        else:
+                #this exexcutes when oponents turn
+                
+                opponent_id = 3 - self.player_id
+                min_eval = np.inf
+                node.generate_children(opponent_id)
+                
+                for child in node.children:
+                    eval = self.alpha_beta(child, depth - 1, alpha, beta, True)
+                    min_eval = min(min_eval, eval)
+                    beta = min(beta, eval)
+                    
+                    if beta <= alpha:
+                        break
+                    
+                node.utility = min_eval 
+                return min_eval
+            
+        
+            
+            
+       
+        
 
 
 class HumanPlayer(PlayerController):
