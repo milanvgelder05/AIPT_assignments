@@ -2,6 +2,7 @@ from __future__ import annotations
 from abc import abstractmethod
 import numpy as np
 from typing import TYPE_CHECKING
+from tree import TreeNode
 if TYPE_CHECKING:
     from heuristics import Heuristic
     from board import Board
@@ -79,39 +80,7 @@ class MinMaxPlayer(PlayerController):
         Returns:
             int: column to play in
         """
-
-        def minimax(self, node: TreeNode, depth: int, maximizing_player: bool) -> int:
-            if depth == 0 or self.heuristic.winning(node.state.get_board_state(), self.game_n) != 0:
-                # Base case: if depth is 0 or there's a winner, return heuristic evaluation
-                return self.heuristic.evaluate_board(self.player_id, node.state)
-            
-            if maximizing_player:
-                #this executes when it is the minimax player's turn (trying to maximize)
-                
-                max_eval = -np.inf
-                node.generate_children(self.player_id)
-                for child in node.children:
-                    eval = self.minimax(child, depth - 1, False)
-                    max_eval - max(max_eval, eval)
-                
-                node.utility = max_eval
-                return max_eval
-            
-            else:
-                #this exexcutes when oponents turn
-                
-                opponent_id = 3 - self.player_id
-                min_eval = np.inf
-                node.generate_children(opponent_id)
-                
-                for child in node.children:
-                    eval = self.minimax(child, depth - 1, True)
-                    min_eval = min(min_eval, eval)
-                    
-                node.utility = min_eval 
-                return min_eval
-            
-            
+              
         root = TreeNode(state=board)
         
         max_value = -np.inf
@@ -129,6 +98,36 @@ class MinMaxPlayer(PlayerController):
             
         return best_move
     
+    def minimax(self, node: TreeNode, depth: int, maximizing_player: bool) -> int:
+            if depth == 0 or self.heuristic.winning(node.state.get_board_state(), self.game_n) != 0:
+                # Base case: if depth is 0 or there's a winner, return heuristic evaluation
+                return self.heuristic.evaluate_board(self.player_id, node.state)
+            
+            if maximizing_player:
+                #this executes when it is the minimax player's turn (trying to maximize)
+                
+                max_eval = -np.inf
+                node.generate_children(self.player_id)
+                for child in node.children:
+                    eval = self.minimax(child, depth - 1, False)
+                    max_eval = max(max_eval, eval)
+                
+                node.utility = max_eval
+                return max_eval
+            
+            else:
+                #this exexcutes when oponents turn
+                
+                opponent_id = 3 - self.player_id
+                min_eval = np.inf
+                node.generate_children(opponent_id)
+                
+                for child in node.children:
+                    eval = self.minimax(child, depth - 1, True)
+                    min_eval = min(min_eval, eval)
+                    
+                node.utility = min_eval 
+                return min_eval
 
 class AlphaBetaPlayer(PlayerController):
     """Class for the minmax player using the minmax algorithm with alpha-beta pruning
