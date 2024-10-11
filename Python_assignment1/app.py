@@ -158,9 +158,9 @@ def get_players(game_n: int) -> List[PlayerController]:
 
 
 if __name__ == '__main__':
-    game_n: int = 3 # n in a row required to win
-    width: int = 5  # width of the board
-    height: int = 5 # height of the board
+    game_n: int = 4 # n in a row required to win
+    width: int = 6  # width of the board
+    height: int = 8 # height of the board
 
     # Check whether the game_n is possible
     assert 1 < game_n <= min(width, height), 'game_n is not possible'
