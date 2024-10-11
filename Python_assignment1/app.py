@@ -142,6 +142,7 @@ def get_players(game_n: int) -> List[PlayerController]:
     #human1: PlayerController = HumanPlayer(1, game_n, heuristic=heuristic2)
     alphabeta: PlayerController = AlphaBetaPlayer(1, game_n, depth=1, heuristic=heuristic1)
     minmax_player: PlayerController = MinMaxPlayer(2, game_n, depth=1, heuristic=heuristic2)
+    human1: PlayerController = HumanPlayer(2, game_n, heuristic=heuristic2)
 
     
 
